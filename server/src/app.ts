@@ -1,6 +1,6 @@
 import express from 'express'
 import cors from 'cors'
-import inventoryRoutes from './routers/inventoryRoutes'
+import inventoryRoutes from './presentation/routes/productRoutes'
 import createProductsTable from './data/productTable'
 
 const app = express()

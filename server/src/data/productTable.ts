@@ -1,4 +1,4 @@
-import pool from "../config/db";
+import pool from "../infrastructure/db/pg-connection";
 
 const createProductsTable = async () => {
   const queryText = `
