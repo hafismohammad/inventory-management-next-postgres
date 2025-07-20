@@ -1,19 +1,21 @@
-import Link from "next/link";
+import Link from "next/link"
+import { Button, Typography, Box, Container } from "@mui/material"
 
 export default function HomePage() {
   return (
-    <main className="p-6">
-  <div className="flex justify-between items-center mb-4">
-    <h1 className="text-2xl font-bold">Inventory</h1>
-    <Link href="/new">
-      <button className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">
-        Add New Item
-      </button>
-    </Link>
-  </div>
+    <Container sx={{ py: 4 }}>
+      <Box display="flex" justifyContent="space-between" alignItems="center" mb={3}>
+        <Typography variant="h5" fontWeight="bold">
+          Inventory
+        </Typography>
+        <Link href="/new" passHref>
+          <Button variant="contained" color="primary">
+            Add New Item
+          </Button>
+        </Link>
+      </Box>
 
-  {/* Table or list of items here */}
-</main>
-
+      {/* Table or list of items goes here */}
+    </Container>
   )
 }
