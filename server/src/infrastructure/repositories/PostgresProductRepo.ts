@@ -3,6 +3,7 @@ import { ProductRepository } from "../../core/interfaces/ProductRepository";
 import { Product } from "../../core/entities/Product";
 
 export class PostgresProductRepo implements ProductRepository {
+  
   async findAll(): Promise<Product[]> {
     const result = await pool.query("SELECT * FROM products");
     return result.rows;

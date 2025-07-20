@@ -13,7 +13,7 @@ export const getAllProducts = async (req: Request, res: Response) => {
 export const createProduct = async (req: Request, res: Response) => {
   const { name, quantity, price, description } = req.body;
     
-    console.log('hit ',  name, quantity, price);
+    // console.log('hit ',  name, quantity, price);
 
   await productService.addProduct({ name, quantity, price ,description});
   res.status(201).json({ message: "Product added" });
