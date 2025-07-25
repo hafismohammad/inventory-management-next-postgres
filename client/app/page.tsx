@@ -8,7 +8,7 @@ import InventoryIcon from '@mui/icons-material/Inventory';
 export default function HomePage() {
   return (
      <Container maxWidth="md" sx={{ py: 6 }}>
-      <Paper elevation={3} sx={{ pt:4, borderRadius: 3 ,backgroundColor: '#81d4fa'}} >
+      <Paper elevation={3} sx={{ p: 1, pt:4, borderRadius: 3 ,backgroundColor: '#81d4fa'}} >
         <Box display="flex" justifyContent="space-between" alignItems="center" mb={4} sx={{px: 2}}>
           <Box display="flex" alignItems="center" gap={1} >
             <InventoryIcon fontSize="large" color="primary" />

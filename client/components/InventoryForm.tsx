@@ -1,5 +1,6 @@
 "use client"
 
+import { useRouter } from "next/navigation"
 import { Formik, Form, ErrorMessage } from "formik"
 import * as Yup from "yup"
 
@@ -9,7 +10,6 @@ import {
   Typography,
   Button,
   Paper,
-  // Container,
 } from "@mui/material"
 import { postInventory } from "@/services/inventoryServices"
 import { InventoryFormValues, InventoryPayload } from "@/interface/inventoryInterface"
@@ -21,13 +21,6 @@ const validationSchema = Yup.object({
   description: Yup.string().optional(),
 })
 
-// interface InventoryFormValues {
-//   itemName: string
-//   quantity: number
-//   price: number
-//   description: string
-// }
-
 const initialValues: InventoryFormValues = {
   itemName: "",
   quantity: 0,
@@ -36,6 +29,9 @@ const initialValues: InventoryFormValues = {
 }
 
 export default function InventoryForm() {
+  
+    const router = useRouter()
+
   const handleSubmit = async (values: InventoryFormValues) => {
     const payload: InventoryPayload = {
       name: values.itemName,
@@ -44,10 +40,12 @@ export default function InventoryForm() {
       description: values.description,
     }
 
+
     try {
-   
-      await postInventory(payload)
-      // await api.post("/api/inventories", payload)
+     const response = await postInventory(payload)
+     if(response.status === 201) {
+      router.push('/')
+     }
       console.log("Item added successfully!")
     } catch (error) {
       console.error("Error adding item:", error)
@@ -62,14 +60,16 @@ export default function InventoryForm() {
     >
       {({ handleChange, values }) => (
         <Form>
-          <Box minHeight="100vh" display="flex" alignItems="center" justifyContent="center" bgcolor="#f3f4f6">
-            <Paper elevation={3} sx={{ maxWidth: 600, width: '100%', p: 4 }}>
+          <Box minHeight="100vh" display="flex" alignItems="center" justifyContent="center" bgcolor="#fafafa">
+            <Paper elevation={3} sx={{background: '#81d4fa', maxWidth: 600, width: '100%', p: 4 }}>
               <Typography variant="h5" align="center" gutterBottom>
                 Add Inventory Item
               </Typography>
 
+              {/* Item Name */}
               <Box mb={2}>
                 <TextField
+                sx={{background: '#fafafa', borderRadius: 1}}
                   fullWidth
                   id="itemName"
                   name="itemName"
@@ -77,14 +77,15 @@ export default function InventoryForm() {
                   value={values.itemName}
                   onChange={handleChange}
                 />
-                <ErrorMessage name="email">
-  {(msg) => <div style={{ color: 'red', fontSize: '12px' }}>{msg}</div>}
-</ErrorMessage>
-
+                <ErrorMessage name="itemName">
+                  {(msg) => <div style={{ color: 'red', fontSize: '12px' }}>{msg}</div>}
+                </ErrorMessage>
               </Box>
 
+              {/* Quantity */}
               <Box mb={2}>
                 <TextField
+                 sx={{background: '#fafafa', borderRadius: 1}}
                   fullWidth
                   id="quantity"
                   name="quantity"
@@ -93,31 +94,32 @@ export default function InventoryForm() {
                   value={values.quantity}
                   onChange={handleChange}
                 />
-                <ErrorMessage name="email">
-  {(msg) => <div style={{ color: 'red', fontSize: '12px' }}>{msg}</div>}
-</ErrorMessage>
-
+                <ErrorMessage name="quantity">
+                  {(msg) => <div style={{ color: 'red', fontSize: '12px' }}>{msg}</div>}
+                </ErrorMessage>
               </Box>
 
+              {/* Price */}
               <Box mb={2}>
                 <TextField
+                 sx={{background: '#fafafa',borderRadius: 1}}
                   fullWidth
                   id="price"
                   name="price"
                   type="number"
-                  // step="0.01"
                   label="Price"
                   value={values.price}
                   onChange={handleChange}
                 />
-                <ErrorMessage name="email">
-  {(msg) => <div style={{ color: 'red', fontSize: '12px' }}>{msg}</div>}
-</ErrorMessage>
-
+                <ErrorMessage name="price">
+                  {(msg) => <div style={{ color: 'red', fontSize: '12px' }}>{msg}</div>}
+                </ErrorMessage>
               </Box>
 
+              {/* Description */}
               <Box mb={3}>
                 <TextField
+                 sx={{background: '#fafafa', borderRadius: 1}}
                   fullWidth
                   id="description"
                   name="description"
@@ -127,12 +129,12 @@ export default function InventoryForm() {
                   value={values.description}
                   onChange={handleChange}
                 />
-                <ErrorMessage name="email">
-  {(msg) => <div style={{ color: 'red', fontSize: '12px' }}>{msg}</div>}
-</ErrorMessage>
-
+                <ErrorMessage name="description">
+                  {(msg) => <div style={{ color: 'red', fontSize: '12px' }}>{msg}</div>}
+                </ErrorMessage>
               </Box>
 
+              {/* Submit Button */}
               <Button variant="contained" color="primary" fullWidth type="submit">
                 Add Item
               </Button>

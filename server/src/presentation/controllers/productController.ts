@@ -5,7 +5,7 @@ import { PostgresProductRepo } from "../../infrastructure/repositories/PostgresP
 const productService = new ProductService(new PostgresProductRepo());
 
 export const getAllProducts = async (req: Request, res: Response) => {
-  console.log('hit controller');
+  // console.log('hit controller');
   
   const products = await productService.getAllProducts();
   
@@ -20,3 +20,10 @@ export const createProduct = async (req: Request, res: Response) => {
   await productService.addProduct({ name, quantity, price ,description});
   res.status(201).json({ message: "Product added" });
 };
+
+export const deleteProduct = async (req: Request, res: Response) => {
+  const product_id = req.params.product_id
+    
+  await productService.deleteProduct(product_id);
+  res.status(200).json({message: "product deleted"})
+}

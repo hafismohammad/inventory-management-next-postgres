@@ -12,3 +12,8 @@ export const getAllInventory = async () => {
     
     return response
 }
+
+export const deleteInventory = async (product_id: string) => {
+    const response = await api.delete(`api/delete-inventories/${product_id}`)
+    return response
+}

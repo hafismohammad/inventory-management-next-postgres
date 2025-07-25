@@ -11,4 +11,8 @@ export class ProductService {
   async addProduct(product: Product): Promise<void> {
     return this.repo.create(product);
   }
+
+  async deleteProduct(product_id: string): Promise<void> {
+    return this.repo.deleteProduct(product_id)
+  }
 }

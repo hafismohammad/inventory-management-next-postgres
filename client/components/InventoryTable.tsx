@@ -1,4 +1,4 @@
-import { getAllInventory } from '@/services/inventoryServices'
+import { deleteInventory, getAllInventory } from '@/services/inventoryServices'
 import {useEffect, useState} from 'react'
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -7,35 +7,74 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-import { InventoryPayload } from '@/interface/inventoryInterface';
+import { Box } from '@mui/material'
+import IconButton from '@mui/material/IconButton'
+import DeleteIcon from '@mui/icons-material/Delete'
+import EditIcon from '@mui/icons-material/Edit'
+import { InventoryTableData } from '@/interface/inventoryInterface';
+import { AlertDialog } from './dialogs/DeleteProduct';
+
+
 
 function InventoryTable() {
-  const [inventoryData, setInvetnoryData] = useState<InventoryPayload[]>([])
+  const [inventoryData, setInvetnoryData] = useState<InventoryTableData[]>([])
+  const [openDialog, setOpenDialog] = useState(false)
+  const [selectedId, setSelectedId] = useState<string | null>(null)
 
   useEffect(() => {
     const fetchAllInventory = async () => {
      const response = await getAllInventory()
-     console.log('all inventory response', response.data);
+    //  console.log('all inventory response', response.data);
      setInvetnoryData(response.data)
     }
 
     fetchAllInventory()
   },[])
 
+  const handleDelete = async (id: string) => {
+
+    setSelectedId(id)
+    setOpenDialog(true)
+    
+  }
+
+    const handleConfirmDelete = async () => {
+    if (selectedId) {
+     const response =  await deleteInventory(selectedId)
+     console.log('jhit func1');
+     
+     if(response.status == 200) {
+      
+       const updatedInventory = await getAllInventory()
+      setInvetnoryData(updatedInventory.data)
+       setOpenDialog(false)
+       setSelectedId(null)
+     }
+    }
+  }
+
+    const handleCloseDialog = () => {
+    setOpenDialog(false)
+    setSelectedId(null)
+  }
+
+
+
   return (
-    <TableContainer component={Paper}  sx={{ backgroundColor: '#e1f5fe', p: 2 }}>
+   <>
+    <TableContainer component={Paper}  sx={{ backgroundColor: '#fafafa', p: 2 }} >
       <Table sx={{ minWidth: 650 }} aria-label="simple table" >
          <TableHead>
             <TableRow>
-            <TableCell>Itme Name</TableCell>
+            <TableCell>Item Name</TableCell>
             <TableCell align="right">Quantity</TableCell>
             <TableCell align="right">Price</TableCell>
-            <TableCell align="right">Description</TableCell>
-            <TableCell align="right">Action</TableCell>
+            <TableCell >Description</TableCell>
+            <TableCell >Action</TableCell>
           </TableRow>
          </TableHead>
           <TableBody>
-          {inventoryData && inventoryData.map((row) => (
+          {inventoryData.map((row) => (
             <TableRow
               key={row.id}
               sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
@@ -45,13 +84,38 @@ function InventoryTable() {
               </TableCell>
               <TableCell align="right">{row.quantity}</TableCell>
               <TableCell align="right">{row.price}</TableCell>
-              <TableCell align="right">{row.description}</TableCell>
-              <TableCell align="right">aaa</TableCell>
+              <TableCell >{row.description}</TableCell>
+              <TableCell >
+                <Box display='flex' gap={1}>
+                  <IconButton
+                  aria-label='edit'
+                  color='primary'
+                  // onClick={}
+                  >
+                     <EditIcon />
+                  </IconButton>
+                  <IconButton
+                  onClick={() => handleDelete(row.id)}
+                  aria-label='delete'
+                  color='error'
+                  >
+                     <DeleteIcon />
+                  </IconButton>
+                </Box>
+              </TableCell>
             </TableRow>
           ))}
         </TableBody>
       </Table>
     </TableContainer>
+
+      <AlertDialog
+        open={openDialog}
+        onClose={handleCloseDialog}
+        onConfirm={handleConfirmDelete}
+      />
+   </>
+
 )
 }
 

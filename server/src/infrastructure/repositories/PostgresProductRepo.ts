@@ -1,6 +1,8 @@
 import pool from "../db/pg-connection";
 import { ProductRepository } from "../../core/interfaces/ProductRepository";
 import { Product } from "../../core/entities/Product";
+import { deleteProduct } from "../../presentation/controllers/productController";
+import { string } from "zod";
 
 export class PostgresProductRepo implements ProductRepository {
   
@@ -20,5 +22,10 @@ export class PostgresProductRepo implements ProductRepository {
   [product.name, product.quantity, product.price, product.description]
 );
 
-  }
 }
+
+async deleteProduct(product_id: string): Promise<void> {
+   await pool.query("DELETE FROM products WHERE id = $1", [product_id]);
+ }
+
+ }

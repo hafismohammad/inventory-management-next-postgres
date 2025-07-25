@@ -5,10 +5,24 @@ export interface InventoryFormValues {
   description: string
 }
 
-export interface InventoryPayload {
-  id: string; 
+export interface InventoryPayload { 
   name: string;
   quantity: number;
   price: number;
   description: string;
+}
+
+export interface InventoryTableData {
+   id: string; 
+  name: string;
+  quantity: number;
+  price: number;
+  description: string;
+}
+
+
+export interface AlertDialogProps {
+  open: boolean;
+  onClose: () => void;
+  onConfirm: () => void;
 }
