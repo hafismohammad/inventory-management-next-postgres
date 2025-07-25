@@ -5,6 +5,8 @@ import { PostgresProductRepo } from "../../infrastructure/repositories/PostgresP
 const productService = new ProductService(new PostgresProductRepo());
 
 export const getAllProducts = async (req: Request, res: Response) => {
+  console.log('hit controller');
+  
   const products = await productService.getAllProducts();
   
   res.json(products);

@@ -5,7 +5,7 @@ import { Product } from "../../core/entities/Product";
 export class PostgresProductRepo implements ProductRepository {
   
   async findAll(): Promise<Product[]> {
-    const result = await pool.query("SELECT * FROM products");
+    const result = await pool.query("SELECT * FROM products ORDER BY id DESC");
     return result.rows;
   }
 

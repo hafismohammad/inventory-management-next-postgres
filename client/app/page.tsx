@@ -1,5 +1,8 @@
+"use client"
+
 import Link from "next/link"
 import { Button, Typography, Box, Container } from "@mui/material"
+import InventoryTable from "@/components/InventoryTable"
 
 export default function HomePage() {
   return (
@@ -14,8 +17,11 @@ export default function HomePage() {
           </Button>
         </Link>
       </Box>
-
       {/* Table or list of items goes here */}
+
+      <div>
+        <InventoryTable />
+      </div>
     </Container>
   )
 }

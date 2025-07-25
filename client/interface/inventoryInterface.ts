@@ -6,6 +6,7 @@ export interface InventoryFormValues {
 }
 
 export interface InventoryPayload {
+  id: string; 
   name: string;
   quantity: number;
   price: number;

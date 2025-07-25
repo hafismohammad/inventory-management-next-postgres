@@ -6,3 +6,9 @@ export const postInventory = async (data: InventoryPayload) => {
     return response
 }
 
+export const getAllInventory = async () => {
+    const response = await api.get('api/inventories')
+    // console.log('all inveotory', response);
+    
+    return response
+}
