@@ -23,8 +23,8 @@ function InventoryTable() {
   },[])
 
   return (
-    <TableContainer component={Paper}>
-      <Table sx={{ minWidth: 650 }} aria-label="simple table">
+    <TableContainer component={Paper}  sx={{ backgroundColor: '#e1f5fe', p: 2 }}>
+      <Table sx={{ minWidth: 650 }} aria-label="simple table" >
          <TableHead>
             <TableRow>
             <TableCell>Itme Name</TableCell>
