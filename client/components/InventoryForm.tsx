@@ -3,7 +3,6 @@
 import { useRouter } from "next/navigation"
 import { Formik, Form, ErrorMessage } from "formik"
 import * as Yup from "yup"
-
 import {
   Box,
   TextField,
@@ -11,8 +10,16 @@ import {
   Button,
   Paper,
 } from "@mui/material"
-import { postInventory } from "@/services/inventoryServices"
+
+import { postInventory, updateInventory } from "@/services/inventoryServices"
 import { InventoryFormValues, InventoryPayload } from "@/interface/inventoryInterface"
+
+const defaultValues: InventoryFormValues = {
+  itemName: "",
+  quantity: 0,
+  price: 0,
+  description: "",
+}
 
 const validationSchema = Yup.object({
   itemName: Yup.string().required("Item name is required"),
@@ -21,18 +28,24 @@ const validationSchema = Yup.object({
   description: Yup.string().optional(),
 })
 
-const initialValues: InventoryFormValues = {
-  itemName: "",
-  quantity: 0,
-  price: 0,
-  description: "",
+interface InventoryFormProps {
+  initialValues?: InventoryFormValues
+  isEditMode?: boolean
+  itemId?: string
+  onSubmitSuccess?: () => void
 }
 
-export default function InventoryForm() {
-  
-    const router = useRouter()
+export default function InventoryForm({
+  initialValues = defaultValues,
+  isEditMode = false,
+  itemId,
+  onSubmitSuccess
+}: InventoryFormProps) {
+
+  const router = useRouter()
 
   const handleSubmit = async (values: InventoryFormValues) => {
+
     const payload: InventoryPayload = {
       name: values.itemName,
       quantity: values.quantity,
@@ -40,15 +53,23 @@ export default function InventoryForm() {
       description: values.description,
     }
 
-
     try {
-     const response = await postInventory(payload)
-     if(response.status === 201) {
-      router.push('/')
-     }
-      console.log("Item added successfully!")
+      if (isEditMode && itemId) {
+        await updateInventory(itemId, payload)
+        console.log("Item updated successfully")
+      } else {
+        const response = await postInventory(payload)
+        if (response.status === 201) {
+          console.log("Item added successfully")
+        }
+      }
+
+      // Callback or redirect
+      if (onSubmitSuccess) onSubmitSuccess()
+      else router.push('/')
+      
     } catch (error) {
-      console.error("Error adding item:", error)
+      console.error("Error saving item:", error)
     }
   }
 
@@ -57,19 +78,20 @@ export default function InventoryForm() {
       initialValues={initialValues}
       validationSchema={validationSchema}
       onSubmit={handleSubmit}
+      enableReinitialize
     >
       {({ handleChange, values }) => (
         <Form>
           <Box minHeight="100vh" display="flex" alignItems="center" justifyContent="center" bgcolor="#fafafa">
-            <Paper elevation={3} sx={{background: '#81d4fa', maxWidth: 600, width: '100%', p: 4 }}>
+            <Paper elevation={3} sx={{ background: '#81d4fa', maxWidth: 600, width: '100%', p: 4 }}>
               <Typography variant="h5" align="center" gutterBottom>
-                Add Inventory Item
+                {isEditMode ? "Edit Inventory Item" : "Add Inventory Item"}
               </Typography>
 
               {/* Item Name */}
               <Box mb={2}>
                 <TextField
-                sx={{background: '#fafafa', borderRadius: 1}}
+                  sx={{ background: '#fafafa', borderRadius: 1 }}
                   fullWidth
                   id="itemName"
                   name="itemName"
@@ -85,7 +107,7 @@ export default function InventoryForm() {
               {/* Quantity */}
               <Box mb={2}>
                 <TextField
-                 sx={{background: '#fafafa', borderRadius: 1}}
+                  sx={{ background: '#fafafa', borderRadius: 1 }}
                   fullWidth
                   id="quantity"
                   name="quantity"
@@ -102,7 +124,7 @@ export default function InventoryForm() {
               {/* Price */}
               <Box mb={2}>
                 <TextField
-                 sx={{background: '#fafafa',borderRadius: 1}}
+                  sx={{ background: '#fafafa', borderRadius: 1 }}
                   fullWidth
                   id="price"
                   name="price"
@@ -119,7 +141,7 @@ export default function InventoryForm() {
               {/* Description */}
               <Box mb={3}>
                 <TextField
-                 sx={{background: '#fafafa', borderRadius: 1}}
+                  sx={{ background: '#fafafa', borderRadius: 1 }}
                   fullWidth
                   id="description"
                   name="description"
@@ -136,7 +158,7 @@ export default function InventoryForm() {
 
               {/* Submit Button */}
               <Button variant="contained" color="primary" fullWidth type="submit">
-                Add Item
+                {isEditMode ? "Update Item" : "Add Item"}
               </Button>
             </Paper>
           </Box>

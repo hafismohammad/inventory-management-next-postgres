@@ -13,13 +13,15 @@ import DeleteIcon from '@mui/icons-material/Delete'
 import EditIcon from '@mui/icons-material/Edit'
 import { InventoryTableData } from '@/interface/inventoryInterface';
 import { AlertDialog } from './dialogs/DeleteProduct';
-
+import { useRouter } from "next/navigation"
 
 
 function InventoryTable() {
   const [inventoryData, setInvetnoryData] = useState<InventoryTableData[]>([])
   const [openDialog, setOpenDialog] = useState(false)
   const [selectedId, setSelectedId] = useState<string | null>(null)
+
+  const router = useRouter()
 
   useEffect(() => {
     const fetchAllInventory = async () => {
@@ -41,7 +43,7 @@ function InventoryTable() {
     const handleConfirmDelete = async () => {
     if (selectedId) {
      const response =  await deleteInventory(selectedId)
-     console.log('jhit func1');
+    
      
      if(response.status == 200) {
       
@@ -57,6 +59,12 @@ function InventoryTable() {
     setOpenDialog(false)
     setSelectedId(null)
   }
+
+const handleEdit = (product_id: string) => {
+  
+  router.push(`/edit/${product_id}`)
+}
+
 
 
 
@@ -90,7 +98,7 @@ function InventoryTable() {
                   <IconButton
                   aria-label='edit'
                   color='primary'
-                  // onClick={}
+                  onClick={() => handleEdit(row.id)}
                   >
                      <EditIcon />
                   </IconButton>

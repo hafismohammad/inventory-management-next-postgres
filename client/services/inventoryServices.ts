@@ -17,3 +17,8 @@ export const deleteInventory = async (product_id: string) => {
     const response = await api.delete(`api/delete-inventories/${product_id}`)
     return response
 }
+
+export const updateInventory = async (product_id: string, updatedProduct: InventoryPayload) => {
+    const response = await api.put(`api/update-inventories`, {product_id, updatedProduct})
+    return response
+}
