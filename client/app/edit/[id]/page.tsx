@@ -16,9 +16,6 @@ export default function EditPage() {
   useEffect(() => {
       const fetchItem = async () => {
           const res = await getAllInventory()
-          console.log('res', res);
-          console.log('convetToNuber',convetToNuber);
-          
           const item = res.data.find((i: InventoryEditData) => i.id === convetToNuber)
           console.log('item',item);
           if (item) {
