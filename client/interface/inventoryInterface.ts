@@ -5,7 +5,7 @@ export interface InventoryFormValues {
   description: string
 }
 
-export interface InventoryPayload { 
+export interface InventoryPayload {
   name: string;
   quantity: number;
   price: number;
@@ -13,7 +13,7 @@ export interface InventoryPayload {
 }
 
 export interface InventoryTableData {
-   id: string; 
+  id: string;
   name: string;
   quantity: number;
   price: number;
@@ -28,7 +28,7 @@ export interface AlertDialogProps {
 }
 
 export interface InventoryEditData {
-   id: number; 
+  id: number;
   name: string;
   quantity: number;
   price: number;

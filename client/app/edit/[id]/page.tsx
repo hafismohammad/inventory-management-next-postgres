@@ -12,13 +12,13 @@ export default function EditPage() {
   const router = useRouter()
   const [initialValues, setInitialValues] = useState<InventoryFormValues | null>(null)
   const convetToNuber = Number(itemId)
-  
+
   useEffect(() => {
-      const fetchItem = async () => {
-          const res = await getAllInventory()
-          const item = res.data.find((i: InventoryEditData) => i.id === convetToNuber)
-          console.log('item',item);
-          if (item) {
+    const fetchItem = async () => {
+      const res = await getAllInventory()
+      const item = res.data.find((i: InventoryEditData) => i.id === convetToNuber)
+      console.log('item', item);
+      if (item) {
         setInitialValues({
           itemName: item.name,
           quantity: item.quantity,
@@ -35,7 +35,7 @@ export default function EditPage() {
 
   if (!initialValues) return <div>Loading...</div>
 
-  
+
 
   return (
     <InventoryForm

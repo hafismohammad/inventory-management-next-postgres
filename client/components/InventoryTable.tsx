@@ -1,5 +1,5 @@
 import { deleteInventory, getAllInventory } from '@/services/inventoryServices'
-import {useEffect, useState} from 'react'
+import { useEffect, useState } from 'react'
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -25,106 +25,106 @@ function InventoryTable() {
 
   useEffect(() => {
     const fetchAllInventory = async () => {
-     const response = await getAllInventory()
-    //  console.log('all inventory response', response.data);
-     setInvetnoryData(response.data)
+      const response = await getAllInventory()
+      //  console.log('all inventory response', response.data);
+      setInvetnoryData(response.data)
     }
 
     fetchAllInventory()
-  },[])
+  }, [])
 
   const handleDelete = async (id: string) => {
 
     setSelectedId(id)
     setOpenDialog(true)
-    
+
   }
 
-    const handleConfirmDelete = async () => {
+  const handleConfirmDelete = async () => {
     if (selectedId) {
-     const response =  await deleteInventory(selectedId)
-    
-     
-     if(response.status == 200) {
-      
-       const updatedInventory = await getAllInventory()
-      setInvetnoryData(updatedInventory.data)
-       setOpenDialog(false)
-       setSelectedId(null)
-     }
+      const response = await deleteInventory(selectedId)
+
+
+      if (response.status == 200) {
+
+        const updatedInventory = await getAllInventory()
+        setInvetnoryData(updatedInventory.data)
+        setOpenDialog(false)
+        setSelectedId(null)
+      }
     }
   }
 
-    const handleCloseDialog = () => {
+  const handleCloseDialog = () => {
     setOpenDialog(false)
     setSelectedId(null)
   }
 
-const handleEdit = (product_id: string) => {
-  
-  router.push(`/edit/${product_id}`)
-}
+  const handleEdit = (product_id: string) => {
+
+    router.push(`/edit/${product_id}`)
+  }
 
 
 
 
   return (
-   <>
-    <TableContainer component={Paper}  sx={{ backgroundColor: '#fafafa', p: 2 }} >
-      <Table sx={{ minWidth: 650 }} aria-label="simple table" >
-         <TableHead>
+    <>
+      <TableContainer component={Paper} sx={{ backgroundColor: '#fafafa', p: 2 }} >
+        <Table sx={{ minWidth: 650 }} aria-label="simple table" >
+          <TableHead>
             <TableRow>
-            <TableCell>Item Name</TableCell>
-            <TableCell align="right">Quantity</TableCell>
-            <TableCell align="right">Price</TableCell>
-            <TableCell >Description</TableCell>
-            <TableCell >Action</TableCell>
-          </TableRow>
-         </TableHead>
-          <TableBody>
-          {inventoryData.map((row) => (
-            <TableRow
-              key={row.id}
-              sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-            >
-              <TableCell component="th" scope="row">
-                {row.name}
-              </TableCell>
-              <TableCell align="right">{row.quantity}</TableCell>
-              <TableCell align="right">{row.price}</TableCell>
-              <TableCell >{row.description}</TableCell>
-              <TableCell >
-                <Box display='flex' gap={1}>
-                  <IconButton
-                  aria-label='edit'
-                  color='primary'
-                  onClick={() => handleEdit(row.id)}
-                  >
-                     <EditIcon />
-                  </IconButton>
-                  <IconButton
-                  onClick={() => handleDelete(row.id)}
-                  aria-label='delete'
-                  color='error'
-                  >
-                     <DeleteIcon />
-                  </IconButton>
-                </Box>
-              </TableCell>
+              <TableCell>Item Name</TableCell>
+              <TableCell align="right">Quantity</TableCell>
+              <TableCell align="right">Price</TableCell>
+              <TableCell >Description</TableCell>
+              <TableCell >Action</TableCell>
             </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
+          </TableHead>
+          <TableBody>
+            {inventoryData.map((row) => (
+              <TableRow
+                key={row.id}
+                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+              >
+                <TableCell component="th" scope="row">
+                  {row.name}
+                </TableCell>
+                <TableCell align="right">{row.quantity}</TableCell>
+                <TableCell align="right">{row.price}</TableCell>
+                <TableCell >{row.description}</TableCell>
+                <TableCell >
+                  <Box display='flex' gap={1}>
+                    <IconButton
+                      aria-label='edit'
+                      color='primary'
+                      onClick={() => handleEdit(row.id)}
+                    >
+                      <EditIcon />
+                    </IconButton>
+                    <IconButton
+                      onClick={() => handleDelete(row.id)}
+                      aria-label='delete'
+                      color='error'
+                    >
+                      <DeleteIcon />
+                    </IconButton>
+                  </Box>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
 
       <AlertDialog
         open={openDialog}
         onClose={handleCloseDialog}
         onConfirm={handleConfirmDelete}
       />
-   </>
+    </>
 
-)
+  )
 }
 
 export default InventoryTable

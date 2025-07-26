@@ -8,8 +8,6 @@ export const postInventory = async (data: InventoryPayload) => {
 
 export const getAllInventory = async () => {
     const response = await api.get('api/inventories')
-    // console.log('all inveotory', response);
-
     return response
 }
 
@@ -19,8 +17,6 @@ export const deleteInventory = async (product_id: string) => {
 }
 
 export const updateInventory = async (product_id: string, updatedProduct: InventoryPayload) => {
-    console.log('update', updatedProduct, product_id);
-
     const response = await api.put(`api/update-inventories`, { product_id, updatedProduct })
     return response
 }
